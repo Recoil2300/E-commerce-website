@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+</head>
+<body>
+    <form action="/upload.js" method="post" enctype="multipart/form-data" >
+         
+        <label for="name">name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="price">price:</label>
+        <input type="number" id="price" name="price" required>
+        <label for="description">description:</label>
+        <input type="text" id="description" name="description" value="" placeholder="null">
+        <label for="quantity">quantity:</label>
+        <input type="number" id="quantity" step="1" name="quantity" value="0" placeholder="0">
+        <label for="upload_pic">Select image to upload:</label>
+        <input type="file" id="upload_pic" name="upload_pic" accept="image/*"><!--确保文件字段在表单最后-->
+        <button type="submit">Upload Image</button>
+    </form>
+</body>
+</html>
