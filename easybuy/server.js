@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fs = require('fs');
 const Router=require('./routes/router');
 const cors = require('cors');
 const session = require('express-session');
@@ -21,6 +22,21 @@ app.use(session({
     cookie: { httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 } // 例如，设置cookie的有效期为一天
 }));
+
+app.use('/login_ctrl',(req, res, next) => {
+    const currentTime = new Date().toISOString();
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const log = `${currentTime} - ${ip} - ${req.method} ${req.url}\n`;
+    
+    // 将日志写入文件
+    fs.appendFile('access.log', log, (err) => {
+      if (err) {
+        console.error('Error writing to log file', err);
+      }
+    });
+  
+    next();
+  });
 
 
 app.use('/',Router);
