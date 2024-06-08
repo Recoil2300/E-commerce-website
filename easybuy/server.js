@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const Router=require('./routes/router');
+const administrator_router=require('./routes/administrator_router')
 const cors = require('cors');
 const session = require('express-session');
 const  SQLiteStore = require('connect-sqlite3')(session);
@@ -40,6 +41,7 @@ app.use('/login_ctrl',(req, res, next) => {
 
 
 app.use('/',Router);
+app.use('/',administrator_router);
 
 app.use((req, res, next) => {
     if (req.path.indexOf('.') === -1) {  // 检查路径中是否有扩展名

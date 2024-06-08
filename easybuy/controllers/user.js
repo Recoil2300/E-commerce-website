@@ -56,12 +56,13 @@ function login(unique){return async function(req,res)
 {
   const db =new dao.sqlite3DAO('./easybuy.db',sqlite3.OPEN_READONLY  );
   try{
-    const result = await db.all_query(`SELECT ${unique},id,password FROM Users WHERE ${unique} = ?`,[req.body[unique]]);
+    const result = await db.all_query(`SELECT * FROM Users INNER JOIN Roles ON Users.id= Roles.id WHERE Users.${unique} = ?`,[req.body[unique]]);
     if(result.length)
     {
     if(req.body.password==result[0].password)
     {
       req.session.user_id=result[0].id;
+      req.session.user_role=result[0].role;
       res.redirect('index.html')
     }
   }
@@ -121,6 +122,7 @@ function authorization(permit_roles=[]){return async function(req,res,next)
   }
   else{res.send("权限不足")}
 }}
+
 
 
 module.exports = {register,login,logout,user_info,user_role,authorization};

@@ -58,14 +58,29 @@ async function add_product(req,res)
 async function getAllProducts() {
     let db = new dao.sqlite3DAO('./easybuy.db');
       const sql = 'SELECT * FROM Products';
-      const rows = await db.query(sql);
+      const rows = await db.all_query(sql);
     db.close();
     return rows;
 }   
 
+/*删除商品*/
+function delete_product(id)
+{
+    const db = new dao.sqlite3DAO('./easybuy.db','sqlite3.OPEN_READWRITE');
+    delete_productpicture(id);
+    db.run_query(`DELETE FROM Products WHERE id = ?`,[id]);
+    db.close;
+}
+
+/*删除商品图片*/
+async function delete_productpicture(id)
+{
+    const db = new dao.sqlite3DAO('./easybuy.db','sqlite3.OPEN_READWRITE');
+    const results=await db.all_query(`SELECT picname FROM Products WHERE id = ?`,[id] );
+    const picname=results[0].picname;
+    fs.unlinkSync(`./public/images/${picname}`);
+    await db.run_query(`UPDATE Products SET picname = ?`,[]);
+}
 
 
-
-
-
-module.exports = { upload_pic,add_product, getAllProducts };
+module.exports = { upload_pic,add_product, getAllProducts,delete_product,delete_productpicture };

@@ -13,7 +13,7 @@ router.get('/hello',async(req,res)=>{
 router.post('/register.js',user.register('email'))
 router.post('/login_ctrl',user.login('email'));
 router.get('/logout',user.logout());
-router.post('/upload.js',user.authorization(['salesperson','administrator']),product.upload_pic('upload_pic'),product.add_product)
+router.post('/upload.js',user.authorization(['salesperson','administrator']),product.upload_pic('upload_pic'),product.add_product);
 
 
 router.get('/products.js', (req, res) => {

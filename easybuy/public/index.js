@@ -23,15 +23,30 @@ document.getElementById('myButton').addEventListener('click', function() {
 });
 */
 get_jsoninfo('/userrole_api')
-  .then(results=>{switch(results[0].role)
+  .then(results=>{let innerhtml;
+    switch(results[0].role)
 {
-   
-    case 'salesperson': const innerhtml=`
+    case 'salesperson':  innerhtml=`
         <p>您现在是销售人员</p>   
     <a href="/upload.html">上传商品</a>
     `;
-    add_dynamicelements(innerhtml,'dynamic_field');
-}});
+    break;
+    case 'administrator': innerhtml=`
+        <p>您现在是管理人员</p>   
+    <a href="/administrator.html">管理页面</a>
+    `;
+    break;
+    case 'consumer': innerhtml=`
+        <p>您现在是用户</p>   
+    `;
+    break;
+    default:
+        innerhtml=`
+        <p>您现在是游客</p>   
+    `
+}
+add_dynamicelements(innerhtml,'dynamic_field');
+});
 
 
 
@@ -68,6 +83,7 @@ fetch('/userinfo_api')
     if(info.length){
         userinfo_div.innerHTML=`
         <p>欢迎您，${info[0].name}</p>
+        <p>您的id：${info[0].id}</p>
         <a href="/logout">注销</a>
         `;}
     else{
